@@ -62,9 +62,9 @@ It is impossible to reach `[2, 0, 1, 3]`. Thus, the answer is -1.
 ## Solution
 
 **Language:** Java  
-**Runtime:** 0 ms  
-**Memory:** 42.1 MB  
-**Submitted:** 2026-10-22T14:16:42.714Z  
+**Runtime:** 10 ms (beats 8.33%)  
+**Memory:** 94.8 MB (beats 81.67%)  
+**Submitted:** 2026-10-22T14:20:11.578Z  
 
 ```java
 class Solution {
@@ -79,31 +79,33 @@ class Solution {
             }
         }
 
-        boolean normal=true;
-        boolean reverse=true;
+        boolean inc=true;
+        boolean dec=true;
 
-        for(int i=0;i<n;i++){
-            if(nums[(zero+i)%n]!=i){
-                normal=false;
-                break;
-            }
+        for(int i=1;i<n;i++){
+            int prev=(zero+i-1)%n;
+            int curr=(zero+i)%n;
+
+            if(nums[curr]!=(nums[prev]+1)%n)
+                inc=false;
+
+            if(nums[curr]!=(nums[prev]-1+n)%n)
+                dec=false;
         }
 
-        int last=n-1;
-        for(int i=0;i<n;i++){
-            if(nums[(last-i+n)%n]!=i){
-                reverse=false;
-                break;
-            }
+        int ans=Integer.MAX_VALUE;
+
+        if(inc){
+            ans=Math.min(ans,zero);
+            ans=Math.min(ans,n-zero+2);
         }
 
-        if(normal)
-            return zero;
+        if(dec){
+            ans=Math.min(ans,zero+2);
+            ans=Math.min(ans,n-zero);
+        }
 
-        if(reverse)
-            return 1+(n-1-last+n)%n;
-
-        return -1;
+        return ans==Integer.MAX_VALUE?-1:ans;
     }
 }
 ```
