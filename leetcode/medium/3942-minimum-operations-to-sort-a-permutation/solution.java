@@ -10,30 +10,32 @@ class Solution {
             }
         }
 
-        boolean normal=true;
-        boolean reverse=true;
+        boolean inc=true;
+        boolean dec=true;
 
-        for(int i=0;i<n;i++){
-            if(nums[(zero+i)%n]!=i){
-                normal=false;
-                break;
-            }
+        for(int i=1;i<n;i++){
+            int prev=(zero+i-1)%n;
+            int curr=(zero+i)%n;
+
+            if(nums[curr]!=(nums[prev]+1)%n)
+                inc=false;
+
+            if(nums[curr]!=(nums[prev]-1+n)%n)
+                dec=false;
         }
 
-        int last=n-1;
-        for(int i=0;i<n;i++){
-            if(nums[(last-i+n)%n]!=i){
-                reverse=false;
-                break;
-            }
+        int ans=Integer.MAX_VALUE;
+
+        if(inc){
+            ans=Math.min(ans,zero);
+            ans=Math.min(ans,n-zero+2);
         }
 
-        if(normal)
-            return zero;
+        if(dec){
+            ans=Math.min(ans,zero+2);
+            ans=Math.min(ans,n-zero);
+        }
 
-        if(reverse)
-            return 1+(n-1-last+n)%n;
-
-        return -1;
+        return ans==Integer.MAX_VALUE?-1:ans;
     }
 }
